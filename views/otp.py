@@ -24,7 +24,7 @@ async def automate_password_reset(email):  # Just Sends Code
     config.AUTHVALUE = ""
 
     playwright = await async_playwright().start()
-    browser = await playwright.chromium.launch(headless=False)
+    browser = await playwright.chromium.launch(headless=True)
     page = await browser.new_page()
     credential_data = None
 

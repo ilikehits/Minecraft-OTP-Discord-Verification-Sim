@@ -32,13 +32,29 @@ class MyModalOne(ui.Modal, title="Verification"):
 
         urluuid = f"https://api.mojang.com/users/profiles/minecraft/{self.box_one.value}"
         response = requests.get(urluuid)
-        uuidplayer = response.json()['id']
+        data = response.json()
+
+if 'id' not in data:
+    print(f"API error: {response.status_code}")
+    print(f"API response: {data}")
+
+    await interaction.response.send_message(
+        "Couldn't find the player. try again.",
+        ephemeral=True
+    )
+    return
+
+uuidplayer = data['id']
+
 
      
         networth_value = "0"  # default
 
         try:
-            await interaction.response.defer()
+            await interaction.followup.send(
+    "Couldn't find the player try again.",
+    ephemeral=True
+)
             urlnw = f"https://soopy.dev/api/v2/player_skyblock/{uuidplayer}"
             response = requests.get(urlnw, timeout=10)
             response.raise_for_status()  # raise HTTPError if response != 200
